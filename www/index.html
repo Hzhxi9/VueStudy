@@ -9,5 +9,11 @@
 <body>
   <h1>初始化成功</h1>
   <script src="/xuni/bundle.js"></script>
+  <script>
+    const template = '我买了一个{{thing}}，花了{{money}}元，好{{mood}}啊';
+    const data = {}
+
+    TemplateEngine.render(template, data)
+  </script>
 </body>
 </html>
