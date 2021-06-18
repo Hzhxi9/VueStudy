@@ -1,22 +1,16 @@
-import Scanner from "./Scanner";
+import parseTemplateToTokens from "./parseTemplateToTokens";
 
 /**
  * 创建全局变量 TemplateEngine
  */
 window.TemplateEngine = {
+  /**渲染方法 */
   render(template, data) {
-    /**实例化扫描器，构造时候传入模板字符串，针对模板字符串进行处理 */
-    const scanner = new Scanner(template);
-    let words;
-    /**当scanner没有到头 */
-    while (!scanner.eos()) {
-      words = scanner.scamUtil("{{");
-      console.log(words);
-      scanner.scan("{{");
+    /**
+     * 调用parseTemplateToTokens函数，让模板字符串能够变成tokens数组
+     */
+    const tokens = parseTemplateToTokens(template);
 
-      words = scanner.scamUtil("}}");
-      console.log(words);
-      scanner.scan("}}");
-    }
+    console.log(tokens);
   },
 };

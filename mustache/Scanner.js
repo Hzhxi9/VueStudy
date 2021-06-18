@@ -3,7 +3,6 @@
  */
 export default class Scanner {
   constructor(templateStr) {
-    console.log("Scanner", templateStr);
     /**将模板字符串赋值 */
     this.template = templateStr;
     /**指针 */
