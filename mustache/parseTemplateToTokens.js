@@ -1,4 +1,5 @@
 import Scanner from "./Scanner";
+import nestTokens from "./nestTokens";
 
 /**
  * 将模板字符串变为tokens数组
@@ -44,5 +45,5 @@ export default function parseTemplateToTokens(template) {
     scanner.scan("}}");
   }
 
-  return tokens;
+  return nestTokens(tokens);
 }
