@@ -256,7 +256,12 @@ function parseTemplate(template, tags) {
       'Unclosed section "' + openSection[1] + '" at ' + scanner.pos
     );
 
-  return nestTokens(squashTokens(tokens));
+  /**DEBUG */
+  var debugTokens = nestTokens(squashTokens(tokens));
+
+  console.log(debugTokens, "===debugTokens===");
+
+  return debugTokens;
 }
 
 /**
@@ -852,4 +857,6 @@ mustache.Scanner = Scanner;
 mustache.Context = Context;
 mustache.Writer = Writer;
 
-export default mustache;
+module.exports = mustache;
+
+// export default mustache;
