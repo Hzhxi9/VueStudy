@@ -16,30 +16,36 @@ export default function nestTokens(tokens) {
    **/
   const sections = [];
 
+  /**
+   * 收集器，天生指向nestedTokens结果数组，引用类型值，所以指向的是同一个数组
+   * 收集器的指向会发生变化，当遇见#的时候，收集器会指向这个token的下标为2的新数组
+   */
+  let collector = nestedTokens;
+
   for (let i = 0, len = tokens.length; i < len; i++) {
     let token = tokens[i];
 
     switch (token[0]) {
       case "#":
-        /**拓展token, 在下标为2创建一个数组，用来收集子元素*/
-        token[2] = [];
-        /**压栈(入栈) */
+        /**收集器中放入这个token */
+        collector.push(token);
+        /**入栈 */
         sections.push(token);
-        // console.log(`${token[1]}入栈`);
+        /**收集器要切换，给token添加为下标为2的项，并且让收集器指向他 */
+        collector = token[2] = [];
         break;
       case "/":
-        /**弹栈(出栈), pop 会返回刚刚弹出的项目*/
+        /**出栈, pop会返回刚刚弹出的项 */
         const section = sections.pop();
-        /**刚刚弹出的项还没有加入到结果数组中 */
-        nestedTokens.push(section);
-        // console.log(`${section[1]}出栈`);
+        /**改变收集器为栈结构队尾(队尾是栈顶)，那项的下标为2的数组 */
+        collector =
+          sections.length > 0 ? sections[sections.length - 1][2] : nestedTokens;
         break;
       default:
-        if (!sections.length) {
-          nestedTokens.push(token);
-        } else {
-          sections[sections.length - 1][2].push(token);
-        }
+        /**
+         * 不管当前的collector是谁，可能是结果nestedTokens，也可能是某个token的下标为2的数组，全部推入collector中
+         */
+        collector.push(token);
         break;
     }
   }
