@@ -1,4 +1,4 @@
-import Scanner from "./Scanner";
+–import Scanner from "./Scanner";
 import nestTokens from "./nestTokens";
 
 /**
@@ -20,7 +20,35 @@ export default function parseTemplateToTokens(template) {
     words = scanner.scamUtil("{{");
 
     /**保存 */
-    tokens.push(["text", words]);
+    if (words !== "") {
+      /**
+       * 去掉空格，智能判断是普通文字的空格还是标签内的空格
+       * 标签内的空格，不能去掉，不如class前面的空格不能去掉
+       */
+      let isInLabel = false;
+      
+      /**空白字符串 */
+      let _words = '';
+
+      for(let i= 0, len = words.length;i<len;i++){
+        /**判断是否在标签内 */
+        if(words[i] === '<'){
+          isInLabel = true
+        }else if(words[i] === '>'){
+          isInLabel = true
+        }
+
+        /**如果当前这项不是空格，就拼接上 */
+        if(!/\s/.test(words[i])){
+          _words += words[i]
+        }else{
+           if(isInLabel) _words += ' ';
+        }
+      }
+
+
+      tokens.push(["text", _words]);
+    }
 
     /**跳过{{ */
     scanner.scan("{{");

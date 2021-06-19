@@ -1,4 +1,5 @@
 import lookup from "./lookup";
+import parseArray from "./parseArray";
 
 /**
  * 让tokens数组变为dom字符串
@@ -24,6 +25,7 @@ export default function renderTemplate(tokens, data) {
       result += lookup(data, token[1]);
     } else if (token[0] === " #") {
       /**#标记的tokens，需要递归处理它的下标为2的小数组 */
+      result += parseArray(token, data);
     }
   }
 

@@ -15,8 +15,6 @@ window.TemplateEngine = {
     /**
      * 调用renderTemplate函数，让tokens数组变为dom字符串
      */
-    renderTemplate(tokens, data);
-
-    console.log(tokens);
+    return renderTemplate(tokens, data);
   },
 };

@@ -6,12 +6,12 @@
  * 那么lookup(o, 'a.b.c') 结果就是100
  *
  * @param {object} o
- * @param {string} kay
+ * @param {string} key
  */
 
-export default function lookup(o, kay) {
-  /**先判断有没有点符号 */
-  if (~kay.indexOf(".")) {
+export default function lookup(o, key) {
+  /**先判断有没有点符号,但不能是点本身*/
+  if (~key.indexOf(".") && key !== ".") {
     let keys = key.split(".");
     /**设置临时变量， 用于周转， 一层层寻找下去 */
     let temp = o;
