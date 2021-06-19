@@ -1,4 +1,4 @@
-–import Scanner from "./Scanner";
+import Scanner from "./Scanner";
 import nestTokens from "./nestTokens";
 
 /**
@@ -26,7 +26,7 @@ export default function parseTemplateToTokens(template) {
        * 标签内的空格，不能去掉，不如class前面的空格不能去掉
        */
       let isInLabel = false;
-      
+
       /**空白字符串 */
       let _words = '';
 
