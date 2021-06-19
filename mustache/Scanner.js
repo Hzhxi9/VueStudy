@@ -22,7 +22,7 @@ export default class Scanner {
       /**tag有多长，比如{{ 长度为2，就让指针后移多少位 */
       this.pos += tag.length;
       /**改变尾巴为从当前指针之后字符串开始，到最后的全部字符串 */
-      this.tail = this.template.substr(this.pos);
+      this.tail = this.template.substring(this.pos);
     }
   }
 
@@ -33,7 +33,7 @@ export default class Scanner {
    * @param {string} stopTag 结束标记
    * @returns {string} 结束标记前的字符串
    */
-  scamUtil(stopTag) {
+  scanUtil(stopTag) {
     /**记录一下执行本方法的时候pos的值 */
     const pos_backup = this.pos;
     /**
@@ -43,7 +43,7 @@ export default class Scanner {
     while (!this.eos() && this.tail.indexOf(stopTag) !== 0) {
       this.pos++;
       /**改变尾巴为从当前指针之后字符串开始，到最后的全部字符串 */
-      this.tail = this.template.substr(this.pos);
+      this.tail = this.template.substring(this.pos);
     }
 
     return this.template.substring(pos_backup, this.pos);
@@ -57,3 +57,4 @@ export default class Scanner {
     return this.pos >= this.template.length;
   }
 }
+

@@ -11,10 +11,13 @@ window.TemplateEngine = {
      * 调用parseTemplateToTokens函数，让模板字符串能够变成tokens数组
      */
     const tokens = parseTemplateToTokens(template);
-
     /**
      * 调用renderTemplate函数，让tokens数组变为dom字符串
      */
-    return renderTemplate(tokens, data);
+    const domStr = renderTemplate(tokens, data);
+
+    return domStr
   },
 };
+
+

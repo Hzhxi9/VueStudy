@@ -24,3 +24,4 @@ export default function lookup(o, key) {
   /**没有符号直接返回 */
   return o[key];
 }
+

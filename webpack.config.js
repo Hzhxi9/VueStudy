@@ -16,7 +16,7 @@ module.exports = {
     /**不压缩 */
     compress: false,
     /**端口号 */
-    port: 8800,
+    port: 8801,
     /**虚拟打包的路径，bundle.js文件没有真正生成 */
     publicPath: "/xuni/",
   },

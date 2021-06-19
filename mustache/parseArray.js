@@ -9,10 +9,9 @@ import renderTemplate from "./renderTemplate";
  *
  */
 export default function parseArray(token, data) {
-  console.log(data, token);
-
   /**得到整体数据data中这个数组要处理的部分 */
   const v = lookup(data, token[1]);
+  /**结果字符串 */
   let result = "";
   /**遍历v数据，v一定是数组 */
   for (let i = 0, len = v.length; i < len; i++) {
@@ -21,3 +20,4 @@ export default function parseArray(token, data) {
   }
   return result;
 }
+

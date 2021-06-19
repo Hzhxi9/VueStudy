@@ -17,7 +17,7 @@ export default function parseTemplateToTokens(template) {
   /**当scanner没有到头 */
   while (!scanner.eos()) {
     /**收集开始标记之前出现的文字 */
-    words = scanner.scamUtil("{{");
+    words = scanner.scanUtil("{{");
 
     /**保存 */
     if (words !== "") {
@@ -28,24 +28,24 @@ export default function parseTemplateToTokens(template) {
       let isInLabel = false;
 
       /**空白字符串 */
-      let _words = '';
+      let _words = "";
 
-      for(let i= 0, len = words.length;i<len;i++){
+      for (let i = 0, len = words.length; i < len; i++) {
         /**判断是否在标签内 */
-        if(words[i] === '<'){
-          isInLabel = true
-        }else if(words[i] === '>'){
-          isInLabel = true
+        if (words[i] === "<") {
+          isInLabel = true;
+        } else if (words[i] === ">") {
+          isInLabel = false;
         }
 
         /**如果当前这项不是空格，就拼接上 */
-        if(!/\s/.test(words[i])){
-          _words += words[i]
-        }else{
-           if(isInLabel) _words += ' ';
+        if (!/\s/.test(words[i])) {
+          _words += words[i];
+        } else {
+          /**如果这项是空格，只有当它在标签内的时候，才拼接上 */
+          if (isInLabel) _words += " ";
         }
       }
-
 
       tokens.push(["text", _words]);
     }
@@ -54,7 +54,7 @@ export default function parseTemplateToTokens(template) {
     scanner.scan("{{");
 
     /**收集开始标记之前出现的文字 */
-    words = scanner.scamUtil("}}");
+    words = scanner.scanUtil("}}");
     /**保存 */
     if (words !== "") {
       /**
@@ -62,8 +62,10 @@ export default function parseTemplateToTokens(template) {
        * 判断words的首字符
        **/
       if (words.startsWith("#")) {
+        /**存起来， 从下标为1的项开始存，因为下标为0的项是# */
         tokens.push(["#", words.substring(1)]);
       } else if (words.startsWith("/")) {
+        /**存起来， 从下标为1的项开始存，因为下标为0的项是/ */
         tokens.push(["/", words.substring(1)]);
       } else {
         tokens.push(["name", words]);
