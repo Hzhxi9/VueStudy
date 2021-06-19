@@ -12,22 +12,34 @@
 
     <script src="/xuni/bundle.js"></script>
     <script>
-      const template = `
-      <div>
-        <ul>
-          {{#students}}
-              <li>
-                <ol>
-                  学生{{item.name}}的爱好是 {{#item.hobbies}}
-                  <li>{{.}}</li>
-                  {{/item.hobbies}}
-                </ol>
-              </li>
-          {{/students}}
-         </ul>
-       </div>
-        `;
-      const data = {};
+      // const template = `
+      // <div>
+      //   <ul>
+      //     {{#students}}
+      //         <li>
+      //           <ol>
+      //             学生{{item.name}}的爱好是 {{#item.hobbies}}
+      //             <li>{{.}}</li>
+      //             {{/item.hobbies}}
+      //           </ol>
+      //         </li>
+      //     {{/students}}
+      //    </ul>
+      //  </div>
+      //   `;
+      // const data = {
+      //   students: [
+      //     { name: "小明", hobbies: ["游泳", "健身"] },
+      //     { name: "小红", hobbies: ["足球", "篮球", "羽毛球"] },
+      //     { name: "小强", hobbies: ["吃饭", "睡觉"] },
+      //   ],
+      // };
+
+      const template =  `我爱{{somebody}},{{somebody}}也爱我`
+      
+      const data = {
+        somebody: 'hello world'
+      }
 
       TemplateEngine.render(template, data);
     </script>

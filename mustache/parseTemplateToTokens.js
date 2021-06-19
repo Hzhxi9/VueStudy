@@ -29,16 +29,17 @@ export default function parseTemplateToTokens(template) {
     words = scanner.scamUtil("}}");
     /**保存 */
     if (words !== "") {
-      /**需要判断多维数组的时候 */
+      /**
+       * 需要判断多维数组的时候
+       * 判断words的首字符
+       **/
       if (words.startsWith("#")) {
         tokens.push(["#", words.substring(1)]);
       } else if (words.startsWith("/")) {
         tokens.push(["/", words.substring(1)]);
       } else {
-        tokens.push(["text", words]);
+        tokens.push(["name", words]);
       }
-
-      // tokens.push(["name", words]);
     }
 
     /**跳过}} */
