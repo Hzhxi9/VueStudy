@@ -31,7 +31,7 @@ patch(container, vnode);
 
 const newVnode = h(
   "div#container.two.classes",
-  { on: { click: function () {} } },
+  { on: { click: function () { } } },
   [
     h(
       "span",
