@@ -7,8 +7,8 @@ export default class Scanner {
 
   scan(tag) {
     if (this.tail.indexOf(tag) === 0) {
-      this.pos += this.tag.length;
-      this.tail += this.template.substring(this.pos);
+      this.pos += tag.length;
+      this.tail = this.template.substring(this.pos);
     }
   }
 
@@ -18,7 +18,6 @@ export default class Scanner {
       this.pos++;
       this.tail = this.template.substring(this.pos);
     }
-
     return this.template.substring(pos_backup, this.pos);
   }
 
