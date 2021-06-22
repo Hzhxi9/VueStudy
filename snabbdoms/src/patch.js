@@ -18,6 +18,9 @@ export default function (oldVnode, newVnode) {
   if (oldVnode.key === newVnode.key && oldVnode.sel === newVnode.sel) {
     /**同一个节点，进行精细化比较 */
     console.log("同一个节点");
+
+    
+    
   } else {
     /** 不是同一个节点，进行暴力操作，插入新的，删除旧的 */
     const newVnodeElm = createElement(newVnode, oldVnode.elm);
