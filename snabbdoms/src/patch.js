@@ -20,6 +20,13 @@ export default function (oldVnode, newVnode) {
     console.log("同一个节点");
   } else {
     /** 不是同一个节点，进行暴力操作，插入新的，删除旧的 */
-    createElement(newVnode, oldVnode.elm);
+    const newVnodeElm = createElement(newVnode, oldVnode.elm);
+    /**插入到老节点之前 */
+    if (oldVnode.elm.parentNode && newVnodeElm) {
+      oldVnode.elm.parentNode.insertBefore(newVnodeElm, oldVnode.elm);
+    }
+
+    /**删除老节点 */
+    oldVnode.elm.parentNode.removeChild(oldVnode.elm);
   }
 }
