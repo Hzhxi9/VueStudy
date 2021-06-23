@@ -6,17 +6,21 @@ const container = document.getElementById("container");
 // const vnode = h("h1", {}, "测试");
 
 const vnode = h("ul", {}, [
-  h("li", {}, "A"),
-  h("li", {}, "B"),
-  h("li", {}, "C"),
-  h("li", {}, "D"),
+  h("li", { key: "A" }, "A"),
+  h("li", { key: "B" }, "B"),
+  h("li", { key: "C" }, "C"),
 ]);
-
 patch(container, vnode);
 
 const btn = document.getElementById("btn");
 
-const vnode2 = h("div", {}, [h("h1", {}, "这是h1"), h("h2", {}, "这是h2")]);
+const vnode2 = h("ul", {}, [
+  h("li", { key: "A" }, "A"),
+  h("li", { key: "B" }, "B"),
+  h("li", { key: "M" }, "M"),
+  h("li", { key: "N" }, "N"),
+  h("li", { key: "C" }, "C"),
+]);
 
 btn.onclick = function () {
   patch(vnode, vnode2);
