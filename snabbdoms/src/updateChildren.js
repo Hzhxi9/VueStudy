@@ -34,9 +34,21 @@ export default function updateChildren(parentElm, oldCh, newCh) {
   /**新后节点 */
   let newEndVnode = newCh[newEndIndex];
 
+  /**存放key的缓存 */
+  let keyMap = null;
+
   /**循环 */
   while (oldStartIndex <= oldEndIndex && newStartIndex <= newEndIndex) {
-    if (checkSameVnode(oldStartVnode, newStartVnode)) {
+    /**略过已经标记了undefined标记的东西 */
+    if (oldStartVnode === null || oldCh[oldStartIndex] === undefined) {
+      oldStartVnode = oldCh[++oldStartIndex];
+    } else if (oldEndVnode === null || oldCh[oldEndIndex] === undefined) {
+      oldEndVnode = oldCh[--oldEndIndex];
+    } else if (newStartVnode === null || oldCh[newStartIndex] === undefined) {
+      newStartVnode = newCh[++newStartIndex];
+    } else if (newEndVnode === null || oldCh[newEndIndex] === undefined) {
+      newEndVnode = newCh[--newEndIndex];
+    } else if (checkSameVnode(oldStartVnode, newStartVnode)) {
       /**1. 新前和旧前 */
       console.log("新前和旧前命中");
       patchVnode(oldStartVnode, newStartVnode);
@@ -83,7 +95,71 @@ export default function updateChildren(parentElm, oldCh, newCh) {
       oldEndVnode = oldCh[--oldEndIndex];
       newStartVnode = newCh[++newStartIndex];
     } else {
-      /**都没有命中的情况 */
+      /**四种名字都没有命中的情况 */
+      /**寻找key中map */
+      if (!keyMap) {
+        keyMap = {};
+        for (let i = oldStartIndex; i <= oldEndIndex; i++) {
+          const key = oldCh[i].key;
+          if (key !== undefined) {
+            keyMap[key] = i;
+          }
+        }
+      }
+
+      /**寻找当前这项(newStartIndex)这项在keyMap中映射的位置序号 */
+      const indexInOld = keyMap[newStartVnode.key];
+
+      if (indexInOld === undefined) {
+        /**如果indexOfIndex是undefined表示他是全新的项目 */
+        /**加入的项(就是) */
+
+      } else {
+        /**不是undefined,则就不是全新的项，而是要移动 */
+        const elmToMove = oldCh[indexInOld];
+
+        patchVnode(elmToMove, newStartVnode);
+        /**把这项设置为undefined，表示我已经处理完这项了 */
+        oldCh[indexInOld] = undefined;
+
+        /**移动 调用insertBefore实现移动 */
+        parentElm.insertBefore(elmToMove.elm, oldStartVnode.elm);
+      }
+      /**指针下移，只移动新的头 */
+      newStartVnode = newCh[++newStartIndex];
+    }
+  }
+
+  /**
+   * 继续寻找有没有剩余的
+   * 循环结束了start比old的小
+   */
+  if (newStartIndex <= newEndIndex) {
+    /**new 还有剩余节点没有处理, 加项*/
+    const before =
+      newCh[newEndIndex + 1] === null
+        ? null
+        : newCh[newEndIndex + 1].elm; /**插入的标杆 */
+
+    for (let i = newStartIndex; i <= newEndIndex; i++) {
+      /**
+       * insertBefore方法可以自动识别null，
+       * 如果是null就会自动拍到队尾去
+       * 和appendChild是一致的
+       *
+       * newCh[i]现在还没真正成为DOM, 所以要调用createElement()函数变为DOM
+       */
+      parentElm.insertBefore(createElement(newCh[i]), before);
+    }
+  } else if (oldStartIndex <= oldEndIndex) {
+    /**
+     * old 还有剩余节点没有处理 删项
+     * 批量删除oldStartIndex 和 oldEndIndex 之间的项目
+     */
+    for (let i = oldStartIndex; i <= oldEndIndex; i++) {
+      if (oldCh[i]) {
+        parentElm.removeChild(oldCh[i].elm);
+      }
     }
   }
 }
