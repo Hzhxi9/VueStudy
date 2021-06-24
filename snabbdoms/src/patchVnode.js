@@ -1,5 +1,7 @@
 import createElement from "./createElement";
+import updateChildren from "./updateChildren";
 
+/**对比同一个虚拟节点 */
 export default function patchVnode(newVnode, oldVnode) {
   /**如果新旧vnode是否是同一个对象 */
   if (oldVnode === newVnode) return;
@@ -21,36 +23,11 @@ export default function patchVnode(newVnode, oldVnode) {
   } else {
     /**newVnode没有text属性 */
     if (oldVnode.children !== undefined && oldVnode.children.length > 0) {
-      /**老的有children，新的有children */
-
-      let un = 0; /**所有为处理节点的开头 */
-      for (let i = 0, len = newVnode.children.length; i < len; i++) {
-        const ch = newVnode.children[i];
-        let isExist = false;
-
-        /**再次遍历， 看看oldVnode中有没有节点和它的一样的*/
-        for (let j = 0, length = oldVnode.children.length; j < length; j++) {
-          const oldCh = oldVnode.children[j];
-          if (oldCh.sel === ch.sel && oldCh.key === ch.key) {
-            isExist = true;
-          }
-        }
-
-        if (!isExist) {
-          const dom = createElement(ch);
-          ch.elm = dom;
-
-          if (un < oldVnode.children.length) {
-            oldVnode.elm.insertBefore(dom, oldVnode.children[un].elm);
-          } else {
-            oldVnode.elm.appendChild(dom);
-          }
-        } else {
-          un++; /** 让未处理指针下移 */
-
-          /**判断移动节点 */
-        }
-      }
+      /**
+       * 老的有children，新的有children
+       * 此时是最复杂的情况
+       */
+      updateChildren(oldVnode.elm, oldVnode.children, newVnode.children);
     } else {
       /**老的没有children， 新的有children */
 

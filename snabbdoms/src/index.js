@@ -17,9 +17,8 @@ const btn = document.getElementById("btn");
 const vnode2 = h("ul", {}, [
   h("li", { key: "A" }, "A"),
   h("li", { key: "B" }, "B"),
-  h("li", { key: "M" }, "M"),
-  h("li", { key: "N" }, "N"),
   h("li", { key: "C" }, "C"),
+  h("li", { key: "D" }, "D"),
 ]);
 
 btn.onclick = function () {
