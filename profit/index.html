@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ch">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="btn">修改</button>
+  <div id="app"></div>
+  <script type="module" src="/src/index.js"></script>
+  <script type="module">
+    // 模板字符串
+    var templateStr = `
+            <div>
+                <ul>
+                    {{#students}}
+                    <li class="myli">
+                        学生{{name}}的爱好是
+                        <ol>
+                            {{#hobbies}}
+                            <li>{{.}}</li>
+                            {{/hobbies}}
+                        </ol>
+                    </li>
+                    {{/students}}
+                </ul>
+            </div>
+        `;
+
+    // 数据
+    var data = {
+      students: [{
+          name: "小明",
+          hobbies: ["编程", "游泳"]
+        },
+        {
+          name: "小红",
+          hobbies: ["看书", "弹琴", "画画"]
+        },
+        {
+          name: "小强",
+          hobbies: ["锻炼"]
+        },
+      ],
+    };
+
+    // const template =  `我爱{{somebody}},{{somebody}}也爱我`
+
+    // const data = {
+    //   somebody: 'hello world'
+    // }
+    const domStr = TemplateEngine.render(templateStr, data);
+
+    console.log(domStr)
+
+    var container = document.getElementById("app");
+    container.innerHTML = domStr;
+  </script>
+</body>
+
+</html>

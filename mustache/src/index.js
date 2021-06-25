@@ -1,5 +1,5 @@
-import parseTemplateToTokens from "../parseTemplateToTokens";
-import renderTemplate from "../renderTemplate";
+import parseTemplateToTokens from "./parseTemplateToTokens";
+import renderTemplate from "./renderTemplate";
 
 /**
  * 创建全局变量 TemplateEngine
