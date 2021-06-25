@@ -105,9 +105,7 @@ export default function updateChildren(parentElm, oldCh, newCh) {
          */
         for (let i = oldStartIndex; i <= oldEndIndex; i++) {
           const key = oldCh[i].key;
-          if (key !== undefined) {
-            keyMap[key] = i;
-          }
+          if (key !== undefined) keyMap[key] = i;
         }
       }
 

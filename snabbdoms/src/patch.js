@@ -20,10 +20,11 @@ export default function (oldVnode, newVnode) {
     /**同一个节点，进行精细化比较 */
     console.log("同一个节点");
 
-    patchVnode(newVnode, oldVnode);
+    patchVnode(oldVnode, newVnode);
   } else {
     /** 不是同一个节点，进行暴力操作，插入新的，删除旧的 */
-    const newVnodeElm = createElement(newVnode, oldVnode.elm);
+    const newVnodeElm = createElement(newVnode);
+
     /**插入到老节点之前 */
     if (oldVnode.elm.parentNode && newVnodeElm) {
       oldVnode.elm.parentNode.insertBefore(newVnodeElm, oldVnode.elm);
