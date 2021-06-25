@@ -96,9 +96,13 @@ export default function updateChildren(parentElm, oldCh, newCh) {
       newStartVnode = newCh[++newStartIndex];
     } else {
       /**四种名字都没有命中的情况 */
-      /**寻找key中map */
+
+      /**创建kepMap一个映射对象，这样就不用每次都遍历老对象了 */
       if (!keyMap) {
         keyMap = {};
+        /**
+         * 从oldStartIndex开始，到oldEndIndex结束，创建keyMap映射对象
+         */
         for (let i = oldStartIndex; i <= oldEndIndex; i++) {
           const key = oldCh[i].key;
           if (key !== undefined) {
@@ -112,13 +116,15 @@ export default function updateChildren(parentElm, oldCh, newCh) {
 
       if (indexInOld === undefined) {
         /**如果indexOfIndex是undefined表示他是全新的项目 */
-        /**加入的项(就是) */
 
+        /**加入的项(就是newStartVnode这项)现在不是真正的DOM节点 */
+        parentElm.insertBefore(createElement(newStartVnode), oldStartVnode.elm);
       } else {
         /**不是undefined,则就不是全新的项，而是要移动 */
         const elmToMove = oldCh[indexInOld];
 
         patchVnode(elmToMove, newStartVnode);
+
         /**把这项设置为undefined，表示我已经处理完这项了 */
         oldCh[indexInOld] = undefined;
 
@@ -135,12 +141,17 @@ export default function updateChildren(parentElm, oldCh, newCh) {
    * 循环结束了start比old的小
    */
   if (newStartIndex <= newEndIndex) {
-    /**new 还有剩余节点没有处理, 加项*/
-    const before =
-      newCh[newEndIndex + 1] === null
-        ? null
-        : newCh[newEndIndex + 1].elm; /**插入的标杆 */
+    /**
+     * new 还有剩余节点没有处理, 加项
+     * 要把剩余的的节点都要插入到oldStartIndex之前
+     **/
 
+    // const before =
+    //   newCh[newEndIndex + 1] === null
+    //     ? null
+    //     : newCh[newEndIndex + 1].elm; /**插入的标杆 */
+
+    /*遍历新的newCh,添加到老的处理之前 */
     for (let i = newStartIndex; i <= newEndIndex; i++) {
       /**
        * insertBefore方法可以自动识别null，
@@ -149,7 +160,10 @@ export default function updateChildren(parentElm, oldCh, newCh) {
        *
        * newCh[i]现在还没真正成为DOM, 所以要调用createElement()函数变为DOM
        */
-      parentElm.insertBefore(createElement(newCh[i]), before);
+      parentElm.insertBefore(
+        createElement(newCh[i]),
+        oldCh[oldStartIndex].elm
+      ); /**插入到老节点之前 */
     }
   } else if (oldStartIndex <= oldEndIndex) {
     /**
