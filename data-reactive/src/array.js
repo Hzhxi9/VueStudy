@@ -62,6 +62,8 @@ methodsNeedChange.forEach((method, idx) => {
 
       console.log("ll");
 
+      ob.dep.notify();
+
       return result;
     },
     false

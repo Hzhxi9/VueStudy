@@ -1,4 +1,5 @@
 import observe from "./observe";
+import Dep from "./Dep";
 /**
  *
  * @param {object】} data
@@ -6,7 +7,8 @@ import observe from "./observe";
  * @param {*} val
  */
 function defineReactive(data, key, val) {
-  console.log("defineReactive", key);
+  const dep = new Dep();
+
   if (arguments.length === 2) {
     val = data[key];
   }
@@ -34,8 +36,12 @@ function defineReactive(data, key, val) {
       console.log("你试图改变" + key + "属性", newValue);
       if (val === newValue) return;
       val = newValue;
+      
       /**当设置了新值，这个新值也要被observe */
       childOb = observe(newValue);
+
+      /**发布订阅模式，通知Dep */
+      dep.notify();
     },
   });
 }

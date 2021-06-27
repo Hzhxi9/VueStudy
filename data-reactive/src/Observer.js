@@ -2,6 +2,7 @@ import { def } from "./utils";
 import { arrayMethods } from "./array";
 import defineReactive from "./defineReactive";
 import observe from "./observe";
+import Dep from "./Dep";
 
 /**
  * 将一个正常的object转换为每个层级的属性都是响应式
@@ -9,6 +10,9 @@ import observe from "./observe";
  */
 export default class Observer {
   constructor(value) {
+    /**每一个Observer的实例身上都有一个dep */
+    this.dep = new Dep();
+
     /**
      * 给实例(this一定要注意， 构造函数中的this不会表示类本身，而是表示实例)
      * 加了__ob__属性，值是这次new的实例
