@@ -29,6 +29,15 @@ function defineReactive(data, key, val) {
     /**数据劫持 getter */
     get() {
       console.log("试图访问" + key + "属性");
+
+      /**如果现在出于依赖收集阶段 */
+      if (Dep.target) {
+        dep.depend();
+        if (childOb) {
+          childOb.dep.depend();
+        }
+      }
+
       return val;
     },
     /**setter */
@@ -36,7 +45,7 @@ function defineReactive(data, key, val) {
       console.log("你试图改变" + key + "属性", newValue);
       if (val === newValue) return;
       val = newValue;
-      
+
       /**当设置了新值，这个新值也要被observe */
       childOb = observe(newValue);
 
