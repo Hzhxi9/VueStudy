@@ -31,4 +31,4 @@ while (arr.length < 10) {
   arr.push(arr[arr.length - 1] + arr[arr.length - 2]);
 }
 
-console.log(arr)
+console.log(arr);
