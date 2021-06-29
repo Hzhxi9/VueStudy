@@ -11,4 +11,4 @@ const template = `
     </div>
 `;
 
-parse(template);
+console.log(parse(template));

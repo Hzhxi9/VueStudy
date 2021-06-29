@@ -19,9 +19,9 @@ export default function parse(template) {
   const tagStack = [];
 
   /**存放内容的栈 */
-  const textStack = [];
+  const textStack = [{ children: [] }];
 
-  while (idx <= template.length - 1) {
+  while (idx < template.length - 1) {
     rest = template.substring(idx);
 
     if (startRegExp.test(rest)) {
@@ -30,7 +30,7 @@ export default function parse(template) {
 
       tagStack.push(tag); /**将开始标记推入栈中 */
 
-      textStack.push([]); /**将空数组推入栈中 */
+      textStack.push({ tag, children: [] }); /**将空数组推入栈中 */
 
       console.log("检测到开始标记", tag);
       /**指针移动标签长度加2，因为<>也占两位 */
@@ -41,9 +41,15 @@ export default function parse(template) {
 
       let tag = rest.match(endRegExp)[1]; /**捕获标签内容 */
 
+      const pop_tag = tagStack.pop();
+
       /**此时tag一定是和tagStack的栈顶一致 */
-      if (tag === tagStack[tagStack.length - 1]) {
-        tagStack.pop();
+      if (tag === pop_tag) {
+        const pop_text = textStack.pop();
+        // /**检查textStack是否有children数组， 如果没有就创建 */
+        if (textStack.length > 0) {
+          textStack[textStack.length - 1].children.push(pop_text);
+        }
       } else {
         throw new Error(tagStack[tagStack.length - 1] + "标签没有封闭");
       }
@@ -52,7 +58,7 @@ export default function parse(template) {
 
       /**指针移动标签长度加3，因为</>也占两位 */
       idx += tag.length + 3;
-      //   console.log(tagStack, textStack);
+      console.log(tagStack, JSON.stringify(textStack));
     } else if (wordRegExp.test(rest)) {
       /**识别遍历到的这个字符是不是文字， 并且不能为空*/
       let word = rest.match(wordRegExp)[1]; /**捕获标签内容 */
@@ -60,6 +66,10 @@ export default function parse(template) {
       /**看word是不是全是空 */
       if (!/^\s+$/.test(word)) {
         /**不是全是空 */
+        textStack[textStack.length - 1].children.push({
+          text: word,
+          type: 3,
+        }); /**改变此时textStack栈顶元素中*/
 
         console.log("检测到文字", word);
       }
@@ -71,4 +81,10 @@ export default function parse(template) {
       idx++;
     }
   }
+
+  /**
+   * 此时textStack就是我们之前默认放置的一项了
+   * 此时要返回这一项的children即可
+   **/
+  return textStack[0].children[0];
 }
