@@ -1,3 +1,4 @@
+import Watcher from "./Watcher";
 export default class Compile {
   constructor(el, vue) {
     /**vue实例 */
@@ -18,6 +19,9 @@ export default class Compile {
 
       /**编译 */
       this.compile($fragment);
+
+      /**替换好的内容要上树 */
+      this.$el.appendChild($fragment);
     }
   }
   node2Fragment(el) {
@@ -45,16 +49,20 @@ export default class Compile {
 
     let that = this;
 
+    /**识别双大括号内容 */
+    const reg = /\{\{(.*)\}\}/;
+
     childNodes.forEach(node => {
+      const text = node.textContent;
+
       if (node.nodeType === 1) {
         /**nodeType === 1 	代表元素 */
         that.compileElement(node);
-      } else if (node.nodeType === 3) {
+      } else if (node.nodeType === 3 && reg.test(text)) {
         /**nodeType === 3  代表元素或属性中的文本内容。 */
 
-        let text = node.textContent;
-
-        console.log(text);
+        const name = text.match(reg)[1];
+        that.compileText(node, name);
       }
     });
   }
@@ -87,5 +95,19 @@ export default class Compile {
       }
     });
   }
-  compileText() {}
+  compileText(node, name) {
+    console.log(node, name);
+    node.textContent = this.getVueValue(this.$vue, name);
+    new Watcher(this.$vue, name, value => {
+      node.textContent = value;
+    });
+  }
+  getVueValue(vue, exp) {
+    let value = vue;
+    exp = exp.split(".");
+    exp.forEach(k => {
+      value = value[k];
+    });
+    return value;
+  }
 }

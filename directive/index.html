@@ -10,29 +10,42 @@
 
 <body>
   <div id="app">
-    <h3 class="box">hello {{a}}</h3>
+    hello {{a}}
     <input type="text" v-model={{model}}>
     <ul>
       <li>A</li>
       <li>B</li>
       <li>C</li>
     </ul>
+    <button id="add">add</button>
   </div>
   <script type="module" src="./src/index.js"></script>
   <script type="module">
     const vm = new Vue({
         el: "#app",
         data:{
-          a: 'world'
+          a: 8
         },
         watch:{
           a(){
-            console.lg('a')
+            console.log('a')
           }
         }
       });
-      console.log(vm)
+     
+      const btn = document.getElementById('add')
+      
+   
+
+      btn.onclick = function(){      
+        vm.a++
+      }
+     
+     
     </script>
+  <script>
+
+  </script>
 </body>
 
 </html>
