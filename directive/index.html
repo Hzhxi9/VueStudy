@@ -1,32 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
 
-  <body>
-    <div id="app">
-      <div>
-        <h3>hello world</h3>
-        <ul>
-          <li>A</li>
-          <li>B</li>
-          <li>C</li>
-        </ul>
-      </div>
-    </div>
-    <script type="module" src="./src/index.js"></script>
-    <script type="module">
-      console.log(window);
-      new Vue({
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <h3 class="box">hello {{a}}</h3>
+    <input type="text" v-model={{model}}>
+    <ul>
+      <li>A</li>
+      <li>B</li>
+      <li>C</li>
+    </ul>
+  </div>
+  <script type="module" src="./src/index.js"></script>
+  <script type="module">
+    const vm = new Vue({
         el: "#app",
-        data() {
-          return {};
+        data:{
+          a: 'world'
         },
+        watch:{
+          a(){
+            console.lg('a')
+          }
+        }
       });
+      console.log(vm)
     </script>
-  </body>
+</body>
+
 </html>
