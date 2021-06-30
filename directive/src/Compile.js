@@ -70,6 +70,8 @@ export default class Compile {
     /**这里方便之处在于不是将HTML结构看做字符串，而是真正的属性列表 */
     const nodeAttrs = node.attributes;
 
+    const that = this;
+
     console.log(nodeAttrs, "=compileElement");
 
     /**类数组对象变为数组 */
@@ -85,8 +87,25 @@ export default class Compile {
       if (attrName.indexOf("v-") === 0) {
         /**v-开头就是指令 */
         if (dir === "model") {
-          /**v-model */
-          console.log("model", value);
+          /**v-model实现双向绑定 */
+
+          /**添加watch */
+          new Watcher(that.$vue, value, value => {
+            node.value = value;
+          });
+
+          /**得到值 */
+          let v = that.getVueValue(that.$vue, value);
+          node.value = v;
+
+          /**设置值，添加监听 */
+          node.addEventListener("input", e => {
+            const newValue = e.target.value;
+
+            that.setValue(that.$vue, value, newValue);
+
+            v = newValue;
+          });
         } else if (dir === "for") {
           /**v-for */
         } else if (dir === "if") {
@@ -102,6 +121,7 @@ export default class Compile {
       node.textContent = value;
     });
   }
+
   getVueValue(vue, exp) {
     let value = vue;
     exp = exp.split(".");
@@ -109,5 +129,17 @@ export default class Compile {
       value = value[k];
     });
     return value;
+  }
+
+  setValue(vue, exp, value) {
+    let val = vue;
+    exp = exp.split(".");
+    exp.forEach((k, i) => {
+      if (i < exp.length - 1) {
+        val = val[k];
+      } else {
+        val[k] = value;
+      }
+    });
   }
 }

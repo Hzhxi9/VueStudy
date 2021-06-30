@@ -10,8 +10,8 @@
 
 <body>
   <div id="app">
-    hello {{a}}
-    <input type="text" v-model={{model}}>
+    hello {{b.m.n}}
+    <input type="text" v-model="b.m.n">
     <ul>
       <li>A</li>
       <li>B</li>
@@ -24,7 +24,12 @@
     const vm = new Vue({
         el: "#app",
         data:{
-          a: 8
+          a: 10,
+          b: {
+            m:{
+              n: 8
+            }
+          }
         },
         watch:{
           a(){
