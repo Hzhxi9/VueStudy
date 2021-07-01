@@ -5,13 +5,6 @@ export default class Scanner {
     this.tail = template;
   }
 
-  scan(tag) {
-    if (this.tail.indexOf(tag) === 0) {
-      this.pos += tag.length;
-      this.tail = this.template.substring(this.pos);
-    }
-  }
-
   scanUtil(stopTag) {
     const pos_backup = this.pos;
     while (!this.eos() && this.tail.indexOf(stopTag) !== 0) {
@@ -19,6 +12,13 @@ export default class Scanner {
       this.tail = this.template.substring(this.pos);
     }
     return this.template.substring(pos_backup, this.pos);
+  }
+
+  scan(tag) {
+    if (this.tail.indexOf(tag) === 0) {
+      this.pos += tag.length;
+      this.tail = this.template.substring(this.pos);
+    }
   }
 
   eos() {

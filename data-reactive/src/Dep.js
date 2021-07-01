@@ -7,7 +7,7 @@ export default class Dep {
      **/
     this.subs = [];
 
-    this.id = uid;
+    this.id = uid++;
   }
 
   /**添加依赖 */

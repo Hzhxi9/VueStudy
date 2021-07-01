@@ -5,28 +5,24 @@ export default function parseTemplateToTokens(template) {
   const tokens = [],
     scanner = new Scanner(template);
 
-  let words = "";
-
+  let words;
   while (!scanner.eos()) {
     words = scanner.scanUtil("{{");
 
     if (words !== "") {
       let _words = "",
         isInLabel = false;
+
       for (let i = 0, len = words.length; i < len; i++) {
         const word = words[i];
-        if (word === "<") {
-          isInLabel = true;
-        } else if (word === ">") {
-          isInLabel = false;
-        }
 
-        if (!/\s/.test(word)) {
-          _words += word;
-        } else {
-          if (isInLabel) _words += " ";
-        }
+        if (word === "<") isInLabel = true;
+        else if (word === ">") isInLabel = false;
+
+        if (!/\s/.test(word)) _words += word;
+        else isInLabel && (_words += " ");
       }
+
       tokens.push(["text", _words]);
     }
 
@@ -35,13 +31,9 @@ export default function parseTemplateToTokens(template) {
     words = scanner.scanUtil("}}");
 
     if (words !== "") {
-      if (words.startsWith("#")) {
-        tokens.push(["#", words.substring(1)]);
-      } else if (words.startsWith("/")) {
-        tokens.push(["/", words.substring(1)]);
-      } else {
-        tokens.push(["name", words]);
-      }
+      if (words.startsWith("#")) tokens.push(["#", words.substring(1)]);
+      else if (words.startsWith("/")) tokens.push(["/", words.substring(1)]);
+      else tokens.push(["name", words]);
     }
 
     scanner.scan("}}");

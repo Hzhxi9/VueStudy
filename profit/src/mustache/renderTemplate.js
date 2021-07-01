@@ -15,10 +15,9 @@ export default function renderTemplate(tokens, data) {
         result += lookup(data, token[1]);
         break;
       case "#":
-        result += parseArray(token, data);
+        result += parseArray(data, token);
         break;
     }
   }
-
   return result;
 }
